@@ -57,7 +57,7 @@ import time
 # NUMPYRO SAMPLER 
 import numpyro
 import numpyro.distributions as dist
-from numpyro.infer import MCMC, NUTS
+from numpyro.infer import MCMC, NUTS, init_to_uniform
 from numpyro.infer.reparam import LocScaleReparam
 from numpyro.handlers import reparam
 
@@ -406,6 +406,7 @@ def run_sampler():
         target_accept_prob=0.95, # CAN INCREASE IF TOO MANY DIVERGENCES 
         dense_mass=True, # HELPS FOR THE HIGHLY CORRELATED PARAMETERS
         max_tree_depth=(6,10), # HELPS WITH BAD TRAJECTORIES, AFTER ~500 STEPS SHOULDNT HIT MAX_TREE_DEPTH
+        init_strategy = init_to_uniform(radius=0.2) # INITIALISES CHAINS IN A TIGHTER REGION OF PARAMETER SPACE (DEFAULT RADIUS IS 2) 
     )
 
     mcmc = MCMC(
